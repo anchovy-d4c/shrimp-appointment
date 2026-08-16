@@ -34,6 +34,10 @@ jobs:
         run: npm ci
       - name: Build static site
         run: npm run build
+      - name: Place assets at the GitHub Pages base path
+        run: |
+          mv dist/client/shrimp-appointment/_next dist/client/_next
+          rmdir dist/client/shrimp-appointment
       - name: Preserve Next.js asset folders
         run: touch dist/client/.nojekyll
       - name: Upload Pages artifact

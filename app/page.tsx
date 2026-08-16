@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type Stage = "welcome" | "question-one" | "question-two" | "schedule" | "confirmed" | "declined";
+type Stage = "welcome" | "question-one" | "question-two" | "schedule" | "reward" | "confirmed" | "declined";
 
 const appointments = [
   { time: "11:00 PM", note: "early-bird shrimp special" },
@@ -13,11 +13,18 @@ const appointments = [
   { time: "4:00 AM", note: "technically breakfast" },
 ];
 
+const foodChoices = [
+  { name: "Pizza", emoji: "🍕", note: "hot, cheesy, dependable" },
+  { name: "Nuggets & fries", emoji: "🍟", note: "the elite late-night combo" },
+  { name: "Kebab / HSP", emoji: "🥙", note: "greasy in the best way" },
+  { name: "Dealer’s choice", emoji: "🎲", note: "trust the shrimp concierge" },
+];
+
 const declineCopy = [
   {
     eyebrow: "tiny follow-up question",
     title: "r u sure?",
-    body: "The shrimp has hydrated and everything.",
+    body: "The shrimp has hydrated and budgeted for food and everything.",
     yes: "Okay, continue",
     no: "Yep, rain check",
   },
@@ -75,6 +82,7 @@ function Shrimp({ size, leaving = false }: { size: number; leaving?: boolean }) 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("welcome");
   const [selectedTime, setSelectedTime] = useState("");
+  const [selectedFood, setSelectedFood] = useState("");
   const [declineStep, setDeclineStep] = useState<number | null>(null);
   const [returnStage, setReturnStage] = useState<Stage>("question-two");
   const [copied, setCopied] = useState(false);
@@ -84,12 +92,13 @@ export default function Home() {
     if (declineStep !== null) return Math.max(0.34, 0.82 - declineStep * 0.2);
     if (stage === "question-one") return 0.82;
     if (stage === "question-two") return 0.98;
-    if (stage === "schedule") return 1.14;
+    if (stage === "schedule") return 1.1;
+    if (stage === "reward") return 1.2;
     if (stage === "confirmed") return 1.3;
     return 0.2;
   }, [stage, declineStep]);
 
-  const progress = stage === "welcome" ? 0 : stage === "question-one" ? 1 : stage === "question-two" ? 2 : stage === "schedule" ? 3 : 4;
+  const progress = stage === "welcome" ? 0 : stage === "question-one" ? 1 : stage === "question-two" ? 2 : stage === "schedule" ? 3 : stage === "reward" ? 4 : 5;
 
   function startDecline(nextStage: Stage) {
     setReturnStage(nextStage);
@@ -98,7 +107,7 @@ export default function Home() {
 
   function reconsider() {
     setDeclineStep(null);
-    setStage(returnStage === "question-two" ? "question-two" : "schedule");
+    setStage(returnStage);
   }
 
   function continueDecline() {
@@ -112,7 +121,7 @@ export default function Home() {
   }
 
   async function shareAppointment() {
-    const text = `Official notice: I’m requesting the ${selectedTime} shrimp appointment. Final confirmation pending 🦐🌻`;
+    const text = `Official notice: Titty Monster has requested one Shrimp Redemption Appointment at ${selectedTime}, with ${selectedFood} as the contractual snack. The $6 Aldi wine is on administrative leave tonight. Reply CONFIRMED to accept 🦐🌻💗`;
     try {
       if (navigator.share) {
         await navigator.share({ title: "Shrimp appointment request", text });
@@ -129,6 +138,7 @@ export default function Home() {
   function reset() {
     setStage("welcome");
     setSelectedTime("");
+    setSelectedFood("");
     setDeclineStep(null);
     setCopied(false);
   }
@@ -153,8 +163,8 @@ export default function Home() {
           <div className="official-stamp">highly<br />official</div>
         </header>
 
-        <div className="progress-dots" aria-label={`Step ${progress} of 4`}>
-          {[1, 2, 3, 4].map((step) => (
+        <div className="progress-dots" aria-label={`Step ${progress} of 5`}>
+          {[1, 2, 3, 4, 5].map((step) => (
             <span key={step} className={progress >= step ? "dot active" : "dot"} />
           ))}
         </div>
@@ -182,17 +192,17 @@ export default function Home() {
               </>
             ) : stage === "welcome" ? (
               <>
-                <p className="eyebrow">a private invitation for Teddy Monster</p>
-                <h1>The Official <em>Shrimp</em> Appointment Office</h1>
+                <p className="eyebrow">a private invitation for Titty Monster</p>
+                <h1>Titty Monster’s Official <em>Shrimp</em> Redemption Portal</h1>
                 <p className="lede">A tiny proposal with potentially large consequences.</p>
                 <button className="primary-button" onClick={() => setStage("question-one")}>Begin application <span>🦐</span></button>
-                <p className="fine-print">Cute invitation. Zero pressure. Sober applicants preferred.</p>
+                <p className="fine-print">Cute invitation. Zero pressure. Aldi’s finest $6 vintage can sit this round out.</p>
               </>
             ) : stage === "question-one" ? (
               <>
                 <p className="eyebrow">question 01 · tonight’s agenda</p>
                 <h1>Want to see me again tonight?</h1>
-                <p className="lede">The shrimp would like one chance at a sober comeback.</p>
+                <p className="lede">Titty Monster, wanna give sober me one comeback—backed by snacks, not Aldi’s finest?</p>
                 <div className="button-stack">
                   <button className="primary-button" onClick={() => setStage("question-two")}>Yes, I’m intrigued <span>→</span></button>
                   <button className="text-button" onClick={() => startDecline("question-two")}>Not tonight</button>
@@ -212,7 +222,7 @@ export default function Home() {
               <>
                 <p className="eyebrow">final step · choose wisely</p>
                 <h1>Pick your shrimp appointment</h1>
-                <p className="lede schedule-lede">Tonight, anytime after 10-ish.</p>
+                <p className="lede schedule-lede">Tonight, anytime after 10-ish. Catering is included.</p>
                 <div className="time-grid" role="radiogroup" aria-label="Appointment time">
                   {appointments.map((appointment) => (
                     <button
@@ -227,8 +237,31 @@ export default function Home() {
                     </button>
                   ))}
                 </div>
-                <button className="primary-button confirm-button" disabled={!selectedTime} onClick={() => setStage("confirmed")}>Request {selectedTime || "a time"} <span>→</span></button>
+                <button className="primary-button confirm-button" disabled={!selectedTime} onClick={() => setStage("reward")}>Choose my bribe <span>→</span></button>
                 <button className="text-button" onClick={() => startDecline("schedule")}>Not tonight after all</button>
+              </>
+            ) : stage === "reward" ? (
+              <>
+                <p className="eyebrow">bonus round · shameless bribery</p>
+                <h1>Fine. What food am I bringing?</h1>
+                <p className="lede schedule-lede">Every premium shrimp appointment includes one late-night meal.</p>
+                <div className="food-grid" role="radiogroup" aria-label="Food incentive">
+                  {foodChoices.map((food) => (
+                    <button
+                      key={food.name}
+                      className={selectedFood === food.name ? "food-card selected" : "food-card"}
+                      onClick={() => setSelectedFood(food.name)}
+                      role="radio"
+                      aria-checked={selectedFood === food.name}
+                    >
+                      <span className="food-emoji">{food.emoji}</span>
+                      <span className="food-copy"><strong>{food.name}</strong><small>{food.note}</small></span>
+                    </button>
+                  ))}
+                </div>
+                <div className="wine-note"><span>🍷</span><p><strong>$6 Aldi wine pairing:</strong> it may attend in spirit. Food and water are doing the heavy lifting tonight.</p></div>
+                <button className="primary-button confirm-button" disabled={!selectedFood} onClick={() => setStage("confirmed")}>Lock in the deal <span>→</span></button>
+                <button className="text-button" onClick={() => setStage("schedule")}>Change the time</button>
               </>
             ) : stage === "confirmed" ? (
               <>
@@ -238,6 +271,7 @@ export default function Home() {
                   <span>Tonight at</span>
                   <strong>{selectedTime}</strong>
                   <small>🦐 + 🌻 · sober comeback edition</small>
+                  <div className="ticket-food"><span>Booking incentive</span><b>{selectedFood}</b></div>
                 </div>
                 <p className="lede confirmation-copy">Final details by text. This books a meetup—not consent to anything. Either of us can change our mind.</p>
                 <button className="primary-button" onClick={shareAppointment}>{copied ? "Copied!" : "Send the verdict"} <span>↗</span></button>
@@ -247,7 +281,7 @@ export default function Home() {
               <>
                 <p className="eyebrow">application closed · no hard feelings</p>
                 <h1>The shrimp has respectfully returned to the sea.</h1>
-                <p className="lede">No appointment tonight. Sleep well, Teddy Monster 🌙</p>
+                <p className="lede">No appointment tonight. Sleep well, Titty Monster 🌙</p>
                 <button className="secondary-button" onClick={reset}>Maybe another night</button>
               </>
             )}
@@ -255,8 +289,8 @@ export default function Home() {
         </div>
 
         <footer className="card-footer">
-          <span>Est. after one unfortunate evening</span>
-          <span>🌻 · 🦐 · 💗</span>
+          <span>Est. after one unfortunate evening · catering included</span>
+          <span>🌻 · 🦐 · 🍕 · 💗</span>
         </footer>
       </section>
     </main>

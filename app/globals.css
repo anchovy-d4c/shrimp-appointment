@@ -273,11 +273,27 @@ button:focus-visible { outline: 4px solid rgba(245,87,139,.25); outline-offset: 
 .confirm-button { width: 100%; margin-top: 2px; }
 .confirm-button + .text-button { display: block; margin: 13px auto 0; }
 
+.food-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin-bottom: 12px; }
+.food-card { min-height: 72px; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid #efd5df; border-radius: 14px; background: rgba(255,255,255,.62); color: var(--ink); text-align: left; cursor: pointer; transition: transform .2s ease, border .2s ease, background .2s ease; }
+.food-card:hover { transform: translateY(-2px); border-color: var(--pink-400); }
+.food-card.selected { border-color: var(--pink-500); background: var(--pink-100); box-shadow: inset 0 0 0 1px var(--pink-500); }
+.food-emoji { flex: 0 0 auto; font-size: 25px; }
+.food-copy { min-width: 0; }
+.food-copy strong { display: block; font-size: 13px; line-height: 1.2; }
+.food-copy small { display: block; margin-top: 3px; color: #98657b; font-size: 9px; line-height: 1.25; }
+.wine-note { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; padding: 9px 11px; border: 1px dashed #e7b6c9; border-radius: 12px; background: rgba(255,238,244,.75); }
+.wine-note > span { font-size: 21px; }
+.wine-note p { margin: 0; color: #865168; font-size: 9px; line-height: 1.4; }
+.wine-note strong { color: var(--pink-700); }
+
 .ticket { max-width: 430px; margin: 23px 0 16px; padding: 19px 22px; position: relative; overflow: hidden; border: 2px dashed var(--pink-400); border-radius: 16px; background: var(--pink-50); }
 .ticket::after { content: "APPROVED"; position: absolute; right: -11px; top: 12px; padding: 6px 12px; border: 2px solid var(--pink-500); color: var(--pink-500); font-size: 10px; font-weight: 900; letter-spacing: .11em; transform: rotate(10deg); }
 .ticket span { display: block; color: #986078; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; }
 .ticket strong { display: block; margin: 2px 0 6px; font-family: Georgia, serif; font-size: 34px; }
 .ticket small { color: #7b4059; }
+.ticket-food { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #e7b6c9; }
+.ticket-food span { font-size: 9px; }
+.ticket-food b { max-width: 58%; text-align: right; font-size: 12px; }
 .confirmation-copy { margin: 14px 0 20px; font-size: 13px; }
 
 .card-footer { border-top: 1px solid #edd6df; padding-top: 16px; color: #a56e84; font-family: Georgia, serif; font-size: 10px; font-style: italic; }
@@ -313,6 +329,8 @@ button:focus-visible { outline: 4px solid rgba(245,87,139,.25); outline-offset: 
   .time-grid { grid-template-columns: 1fr; gap: 7px; }
   .time-card { min-height: 57px; }
   .time-card span { display: inline; margin-left: 4px; }
+  .food-grid { grid-template-columns: 1fr; gap: 7px; }
+  .food-card { min-height: 58px; }
   .card-footer span:first-child { max-width: 170px; }
 }
 

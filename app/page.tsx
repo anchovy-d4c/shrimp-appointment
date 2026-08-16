@@ -293,7 +293,7 @@ export default function Home() {
                 ) : stage === "confirmed" ? (
                   <>
                     <p className="game-eyebrow">MISSION ACCEPTED</p>
-                    <h1>SHRIMP APPOINTMENT REQUESTED!</h1>
+                    <h1>DICK APPOINTMENT REQUESTED</h1>
                     <div className="pixel-receipt">
                       <div><span>TONIGHT</span><strong>{selectedTime}</strong></div>
                       <div className="receipt-food">

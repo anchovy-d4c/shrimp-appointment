@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import "@fontsource/pixelify-sans/400.css";
+import "@fontsource/pixelify-sans/700.css";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -7,8 +9,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = incomingHeaders.get("host") ?? "teddy-shrimp-appointment.mahditasnimenan.chatgpt.site";
   const protocol = incomingHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
-  const title = "Titty Monster’s Official Shrimp Redemption Portal";
-  const description = "A tiny proposal with potentially large consequences—and food included.";
+  const title = "Shrimp Redemption: Press Start";
+  const description = "A pixel-powered late-night appointment request—with snacks, sober mode, and zero pressure.";
   const socialImage = `${origin}/og.png`;
 
   return {
@@ -18,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
-      images: [{ url: socialImage, width: 1700, height: 909, alt: "A bow-tied shrimp with sunflowers and late-night food" }],
+      images: [{ url: socialImage, width: 1731, height: 909, alt: "A pixel shrimp inside a colorful late-night arcade" }],
     },
     twitter: {
       card: "summary_large_image",

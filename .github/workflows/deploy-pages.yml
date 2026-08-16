@@ -37,9 +37,10 @@ jobs:
       - name: Preserve Next.js asset folders
         run: touch dist/client/.nojekyll
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist/client
+          include-hidden-files: true
 
   deploy:
     needs: build
